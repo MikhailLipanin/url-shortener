@@ -5,8 +5,8 @@ package com.urlshortener.config;
  */
 public class StorageConfig {
     private String directory;
-    private String user_links_file;
-    private String active_users_file;
+    private String userLinksFile;
+    private String activeUsersFile;
 
     public String getDirectory() {
         return directory;
@@ -16,19 +16,19 @@ public class StorageConfig {
         this.directory = directory;
     }
 
-    public String getUser_links_file() {
-        return user_links_file;
+    public String getUserLinksFile() {
+        return userLinksFile;
     }
 
-    public void setUser_links_file(String user_links_file) {
-        this.user_links_file = user_links_file;
+    public void setUserLinksFile(String userLinksFile) {
+        this.userLinksFile = userLinksFile;
     }
 
-    public String getActive_users_file() {
-        return active_users_file;
+    public String getActiveUsersFile() {
+        return activeUsersFile;
     }
 
-    public void setActive_users_file(String active_users_file) {
-        this.active_users_file = active_users_file;
+    public void setActiveUsersFile(String activeUsersFile) {
+        this.activeUsersFile = activeUsersFile;
     }
 }

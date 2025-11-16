@@ -7,8 +7,6 @@ import com.urlshortener.service.TTLService;
 import com.urlshortener.service.UrlShortenerService;
 
 import java.awt.Desktop;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -18,22 +16,8 @@ public class Main {
     private static UrlShortenerService urlShortenerService;
     private static TTLService expirationService;
     private static ActiveUsersService activeUsersService;
-    private static String currentUserTty = null;
+    private static String currentUserNickname = null;
     private static final Scanner scanner = new Scanner(System.in);
-
-    /**
-     * Получает TTY терминала текущего процесса
-     * 
-     * @return строка с TTY или уникальный идентификатор сессии
-     */
-    private static String getCurrentTty() {
-        String ppid = System.getenv("PPID");
-        if (ppid != null && !ppid.isEmpty()) {
-            return "session_" + ppid;
-        } 
-        long pid = ProcessHandle.current().parent().orElse(null).pid();
-        return "session_" + pid;
-    }
 
     public static void main(String[] args) {
         // Обрабатываем аргументы командной строки для пути к конфигу
@@ -59,8 +43,13 @@ public class Main {
         expirationService = new TTLService(urlShortenerService);
         activeUsersService = new ActiveUsersService();
 
-        // Получаем TTY текущего пользователя
-        currentUserTty = getCurrentTty();
+        System.out.print("Введите ваш никнейм: ");
+        currentUserNickname = scanner.nextLine().trim();
+
+        if (currentUserNickname.isEmpty()) {
+            System.err.println("Ошибка: никнейм не может быть пустым!");
+            System.exit(1);
+        }
 
         // Увеличиваем счетчик активных пользователей
         activeUsersService.incrementActiveUsers();
@@ -70,9 +59,7 @@ public class Main {
             activeUsersService.decrementActiveUsers();
         }));
 
-        System.out.println("=== Сервис сокращения ссылок ===");
-        System.out.println("Добро пожаловать!");
-        System.out.println("Ваш TTY: " + currentUserTty);
+        System.out.println("Добро пожаловать, " + currentUserNickname + "!");
         System.out.println();
 
         // Запускаем сервис автоматической очистки
@@ -102,8 +89,7 @@ public class Main {
                         break;
                     case "0":
                         running = false;
-                        System.out.println("Сохранение данных...");
-                        System.out.println("До свидания!");
+                        System.out.println("Завершение работы...");
                         break;
                     default:
                         System.out.println("Неверный выбор. Попробуйте снова.");
@@ -128,7 +114,7 @@ public class Main {
         System.out.println("2. Перейти по короткой ссылке");
         System.out.println("3. Просмотреть мои ссылки");
         System.out.println("4. Удалить ссылку");
-        System.out.println("5. Показать мой TTY");
+        System.out.println("5. Показать мой никнейм");
         System.out.println("0. Выход");
         System.out.print("Ваш выбор: ");
     }
@@ -159,8 +145,8 @@ public class Main {
             }
         }
 
-        String shortUrl = urlShortenerService.createShortLink(originalUrl, currentUserTty, clickLimit);
-        System.out.println("✓ Короткая ссылка создана: " + shortUrl);
+        String shortUrl = urlShortenerService.createShortLink(originalUrl, currentUserNickname, clickLimit);
+        System.out.println("Короткая ссылка создана: " + shortUrl);
         System.out.println("Время жизни ссылки: 24 часа");
     }
 
@@ -183,12 +169,12 @@ public class Main {
         if (originalUrl == null) {
             ShortLink link = urlShortenerService.getLinkInfo(shortCode);
             if (link == null) {
-                System.out.println("✗ Ссылка не найдена!");
+                System.out.println("Ссылка не найдена!");
             } else if (link.isExpired()) {
-                System.out.println("✗ Ссылка истекла! Время жизни ссылки составляет 24 часа.");
+                System.out.println("Ссылка истекла! Время жизни ссылки составляет 24 часа.");
             } else if (link.isClickLimitExceeded()) {
                 System.out.println(
-                        "✗ Лимит переходов исчерпан! Максимальное количество переходов: " + link.getClickLimit());
+                        "Лимит переходов исчерпан! Максимальное количество переходов: " + link.getClickLimit());
             }
             return;
         }
@@ -198,7 +184,7 @@ public class Main {
         try {
             if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                 Desktop.getDesktop().browse(new URI(originalUrl));
-                System.out.println("✓ Ссылка открыта в браузере");
+                System.out.println("Ссылка открыта в браузере");
             } else {
                 System.out.println("Не удалось открыть браузер автоматически. Скопируйте ссылку: " + originalUrl);
             }
@@ -211,7 +197,7 @@ public class Main {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     private static void viewMyLinks() {
-        List<ShortLink> links = urlShortenerService.getUserLinks(currentUserTty);
+        List<ShortLink> links = urlShortenerService.getUserLinks(currentUserNickname);
 
         if (links.isEmpty()) {
             System.out.println("У вас пока нет созданных ссылок.");
@@ -221,11 +207,11 @@ public class Main {
         System.out.println("Ваши ссылки:");
         System.out.println("─────────────────────────────────────────────────────────────");
         for (ShortLink link : links) {
-            String status = link.canBeAccessed() ? "✓ Активна" : "✗ Неактивна";
+            String status = link.canBeAccessed() ? "Активна" : "Неактивна";
             if (link.isExpired()) {
-                status = "✗ Истекла";
+                status = "Истекла";
             } else if (link.isClickLimitExceeded()) {
-                status = "✗ Лимит исчерпан";
+                status = "Лимит исчерпан";
             }
 
             System.out.println("Код: " + link.getShortCode());
@@ -248,22 +234,22 @@ public class Main {
             shortCode = shortCode.substring(shortCode.lastIndexOf("/") + 1);
         }
 
-        boolean deleted = urlShortenerService.deleteLink(shortCode, currentUserTty);
+        boolean deleted = urlShortenerService.deleteLink(shortCode, currentUserNickname);
 
         if (deleted) {
-            System.out.println("✓ Ссылка успешно удалена");
+            System.out.println("Ссылка успешно удалена");
         } else {
             ShortLink link = urlShortenerService.getLinkInfo(shortCode);
             if (link == null) {
-                System.out.println("✗ Ссылка не найдена!");
+                System.out.println("Ссылка не найдена!");
             } else {
-                System.out.println("✗ Вы не можете удалить эту ссылку. Вы не являетесь её создателем.");
+                System.out.println("Вы не можете удалить эту ссылку. Вы не являетесь её создателем.");
             }
         }
     }
 
     private static void showUserTty() {
-        System.out.println("Ваш TTY терминала: " + currentUserTty);
-        System.out.println("Этот TTY используется для идентификации всех ваших ссылок.");
+        System.out.println("Ваш никнейм: " + currentUserNickname);
+        System.out.println("Этот никнейм используется для идентификации всех ваших ссылок.");
     }
 }

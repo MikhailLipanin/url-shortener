@@ -13,14 +13,9 @@ public class Config {
     private final ConfigModel configModel;
     private static String configPath = null;
 
-    /**
-     * Устанавливает путь к конфигурационному файлу
-     * 
-     * @param path путь к config.yaml
-     */
+    // Устанавливает путь к конфигурационному файлу
     public static void setConfigPath(String path) {
         configPath = path;
-        // Сбрасываем instance, чтобы перезагрузить конфиг
         instance = null;
     }
 
@@ -46,21 +41,11 @@ public class Config {
                     throw new RuntimeException("Не удалось загрузить конфигурацию из " + defaultConfig.getAbsolutePath()
                             + ": " + e.getMessage(), e);
                 }
-            } else {
-                // Пробуем загрузить из ресурсов
-                try (InputStream inputStream = Config.class.getClassLoader().getResourceAsStream("config.yaml")) {
-                    if (inputStream != null) {
-                        loadedConfig = yaml.loadAs(inputStream, ConfigModel.class);
-                    }
-                } catch (Exception e) {
-                    // Игнорируем
-                }
             }
         }
 
         if (loadedConfig == null) {
-            throw new RuntimeException(
-                    "Не удалось загрузить конфигурацию. Убедитесь, что файл config.yaml существует в корне проекта или укажите путь через -Dconfig.path=...");
+            throw new RuntimeException("Не удалось загрузить конфигурацию.");
         }
 
         this.configModel = loadedConfig;
@@ -83,32 +68,32 @@ public class Config {
     }
 
     public String getUserLinksFile() {
-        return configModel.getStorage().getUser_links_file();
+        return configModel.getStorage().getUserLinksFile();
     }
 
     public String getActiveUsersFile() {
-        return configModel.getStorage().getActive_users_file();
+        return configModel.getStorage().getActiveUsersFile();
     }
 
     // URL Shortener config
     public String getBaseUrl() {
-        return configModel.getUrl_shortener().getBase_url();
+        return configModel.getUrlShortener().getBaseUrl();
     }
 
     public long getDefaultTtlHours() {
-        return configModel.getUrl_shortener().getDefault_ttl_hours();
+        return configModel.getUrlShortener().getDefaultTtlHours();
     }
 
     public int getCodeLength() {
-        return configModel.getUrl_shortener().getCode_length();
+        return configModel.getUrlShortener().getCodeLength();
     }
 
     public String getAlphabet() {
-        return configModel.getUrl_shortener().getAlphabet();
+        return configModel.getUrlShortener().getAlphabet();
     }
 
     // TTL Service config
     public long getCleanupIntervalMinutes() {
-        return configModel.getTtl_service().getCleanup_interval_minutes();
+        return configModel.getTtlService().getCleanupIntervalMinutes();
     }
 }

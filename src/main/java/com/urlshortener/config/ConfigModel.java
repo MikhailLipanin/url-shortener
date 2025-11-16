@@ -5,8 +5,8 @@ package com.urlshortener.config;
  */
 public class ConfigModel {
     private StorageConfig storage;
-    private UrlShortenerConfig url_shortener;
-    private TTLServiceConfig ttl_service;
+    private UrlShortenerConfig urlShortener;
+    private TTLServiceConfig ttlService;
 
     public StorageConfig getStorage() {
         return storage;
@@ -16,19 +16,19 @@ public class ConfigModel {
         this.storage = storage;
     }
 
-    public UrlShortenerConfig getUrl_shortener() {
-        return url_shortener;
+    public UrlShortenerConfig getUrlShortener() {
+        return urlShortener;
     }
 
-    public void setUrl_shortener(UrlShortenerConfig url_shortener) {
-        this.url_shortener = url_shortener;
+    public void setUrlShortener(UrlShortenerConfig urlShortener) {
+        this.urlShortener = urlShortener;
     }
 
-    public TTLServiceConfig getTtl_service() {
-        return ttl_service;
+    public TTLServiceConfig getTtlService() {
+        return ttlService;
     }
 
-    public void setTtl_service(TTLServiceConfig ttl_service) {
-        this.ttl_service = ttl_service;
+    public void setTtlService(TTLServiceConfig ttlService) {
+        this.ttlService = ttlService;
     }
 }

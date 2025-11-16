@@ -36,9 +36,7 @@ public class ActiveUsersService {
         saveActiveUsersCount(newCount);
     }
 
-    /**
-     * Уменьшает счетчик активных пользователей на 1
-     */
+    // Уменьшает счетчик активных пользователей на 1
     public void decrementActiveUsers() {
         int currentCount = getActiveUsersCount();
         if (currentCount > 0) {
@@ -46,9 +44,7 @@ public class ActiveUsersService {
         }
     }
 
-    /**
-     * Получает текущее количество активных пользователей
-     */
+    // Получает текущее количество активных пользователей
     public int getActiveUsersCount() {
         if (!Files.exists(activeUsersPath)) {
             return 0;
@@ -62,15 +58,13 @@ public class ActiveUsersService {
                 return Integer.parseInt(numberPart);
             }
             return 0;
-        } catch (IOException | NumberFormatException e) {
+        } catch (Exception e) {
             System.err.println("Ошибка при чтении файла активных пользователей: " + e.getMessage());
             return 0;
         }
     }
 
-    /**
-     * Сохраняет количество активных пользователей в файл
-     */
+    // Сохраняет количество активных пользователей в файл
     private void saveActiveUsersCount(int count) {
         try {
             String content = "Current number of active users: " + count;

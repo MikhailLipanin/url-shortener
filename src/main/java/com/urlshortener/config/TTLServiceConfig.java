@@ -4,13 +4,13 @@ package com.urlshortener.config;
  * Конфигурация сервиса TTL
  */
 public class TTLServiceConfig {
-    private long cleanup_interval_minutes;
+    private long cleanupIntervalMinutes;
 
-    public long getCleanup_interval_minutes() {
-        return cleanup_interval_minutes;
+    public long getCleanupIntervalMinutes() {
+        return cleanupIntervalMinutes;
     }
 
-    public void setCleanup_interval_minutes(long cleanup_interval_minutes) {
-        this.cleanup_interval_minutes = cleanup_interval_minutes;
+    public void setCleanupIntervalMinutes(long cleanupIntervalMinutes) {
+        this.cleanupIntervalMinutes = cleanupIntervalMinutes;
     }
 }

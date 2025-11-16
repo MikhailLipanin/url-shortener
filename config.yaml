@@ -1,14 +1,14 @@
 storage:
   directory: "url-shortener"
-  user_links_file: "user-links.json"
-  active_users_file: "active_users.txt"
+  userLinksFile: "user-links.json"
+  activeUsersFile: "active_users.txt"
 
-url_shortener:
-  base_url: "clck.ru/"
-  default_ttl_hours: 24
-  code_length: 6
+urlShortener:
+  baseUrl: "clck.ru/"
+  defaultTtlHours: 24
+  codeLength: 6
   alphabet: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
-ttl_service:
-  cleanup_interval_minutes: 60
+ttlService:
+  cleanupIntervalMinutes: 60
 

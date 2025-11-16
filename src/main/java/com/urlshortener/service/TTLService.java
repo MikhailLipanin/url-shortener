@@ -19,9 +19,7 @@ public class TTLService {
         this.scheduler = Executors.newScheduledThreadPool(1);
     }
 
-    /**
-     * Запускает периодическую очистку истекших ссылок
-     */
+    // Запускает периодическую очистку истекших ссылок
     public void start() {
         scheduler.scheduleAtFixedRate(
                 this::cleanupExpiredLinks,
@@ -30,9 +28,7 @@ public class TTLService {
                 TimeUnit.MINUTES);
     }
 
-    /**
-     * Останавливает сервис очистки
-     */
+    // Graceful shutdown
     public void stop() {
         scheduler.shutdown();
     }

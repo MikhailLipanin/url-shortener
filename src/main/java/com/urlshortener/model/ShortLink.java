@@ -3,23 +3,23 @@ package com.urlshortener.model;
 import java.time.LocalDateTime;
 
 /**
- * Модель короткой ссылки
+ * Модель укороченной ссылки
  */
 public class ShortLink {
     private String shortCode;
     private String originalUrl;
-    private String userTty;
+    private String userNickname;
     private int clickCount;
     private Integer clickLimit;
     private LocalDateTime createdAt;
     private LocalDateTime expiresAt;
     private boolean isActive;
 
-    public ShortLink(String shortCode, String originalUrl, String userTty, Integer clickLimit,
+    public ShortLink(String shortCode, String originalUrl, String userNickname, Integer clickLimit,
             LocalDateTime expiresAt) {
         this.shortCode = shortCode;
         this.originalUrl = originalUrl;
-        this.userTty = userTty;
+        this.userNickname = userNickname;
         this.clickCount = 0;
         this.clickLimit = clickLimit;
         this.createdAt = LocalDateTime.now();
@@ -35,8 +35,8 @@ public class ShortLink {
         return originalUrl;
     }
 
-    public String getUserTty() {
-        return userTty;
+    public String getUserNickname() {
+        return userNickname;
     }
 
     public int getClickCount() {

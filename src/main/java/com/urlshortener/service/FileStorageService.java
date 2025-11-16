@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Сервис для сохранения и загрузки данных в JSON файлы
- * Структура: TTY -> Map<URL, ShortLink>
+ * Структура: nickname -> Map<URL, ShortLink>
  * Потокобезопасный доступ через FileLock
  */
 public class FileStorageService {
@@ -45,9 +45,7 @@ public class FileStorageService {
         }
     }
 
-    /**
-     * Сохраняет связи TTY -> Map<URL, ShortLink> с блокировкой файла
-     */
+    // Сохраняет связи nickname -> Map<URL, ShortLink> с блокировкой файла
     public void saveUserLinks(Map<String, Map<String, ShortLink>> userLinks) {
         try (FileChannel channel = FileChannel.open(userLinksPath,
                 StandardOpenOption.CREATE,
@@ -66,9 +64,7 @@ public class FileStorageService {
         }
     }
 
-    /**
-     * Загружает связи TTY -> Map<URL, ShortLink> с блокировкой файла
-     */
+    // Загружает связи nickname -> Map<URL, ShortLink> с блокировкой файла
     public Map<String, Map<String, ShortLink>> loadUserLinks() {
         if (!Files.exists(userLinksPath)) {
             return new ConcurrentHashMap<>();

@@ -4,33 +4,33 @@ package com.urlshortener.config;
  * Конфигурация сервиса сокращения URL
  */
 public class UrlShortenerConfig {
-    private String base_url;
-    private long default_ttl_hours;
-    private int code_length;
+    private String baseUrl;
+    private long defaultTtlHours;
+    private int codeLength;
     private String alphabet;
 
-    public String getBase_url() {
-        return base_url;
+    public String getBaseUrl() {
+        return baseUrl;
     }
 
-    public void setBase_url(String base_url) {
-        this.base_url = base_url;
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
     }
 
-    public long getDefault_ttl_hours() {
-        return default_ttl_hours;
+    public long getDefaultTtlHours() {
+        return defaultTtlHours;
     }
 
-    public void setDefault_ttl_hours(long default_ttl_hours) {
-        this.default_ttl_hours = default_ttl_hours;
+    public void setDefaultTtlHours(long defaultTtlHours) {
+        this.defaultTtlHours = defaultTtlHours;
     }
 
-    public int getCode_length() {
-        return code_length;
+    public int getCodeLength() {
+        return codeLength;
     }
 
-    public void setCode_length(int code_length) {
-        this.code_length = code_length;
+    public void setCodeLength(int codeLength) {
+        this.codeLength = codeLength;
     }
 
     public String getAlphabet() {
